@@ -1,53 +1,37 @@
 package ai.alec.deeppow.pipelines
 
+import ai.alec.deeppow.beam.Avro.fromAvroClass
 import ai.alec.deeppow.beam.Avro.toAvro
-import ai.alec.deeppow.beam.FilterElements.filter
 import ai.alec.deeppow.beam.KPipe
-import ai.alec.deeppow.beam.Map.map
-import ai.alec.deeppow.beam.Text.fromText
 import ai.alec.deeppow.beam.ParDoFunctions.parDo
-import ai.alec.deeppow.dofn.KVPowerByDateTime
-import ai.alec.deeppow.dofn.SumByACPower
-import ai.alec.deeppow.model.toSolarReading
+import ai.alec.deeppow.beam.ParDoFunctions.toKv
+import ai.alec.deeppow.dofn.CalculateImpliedPanelSize
+import ai.alec.deeppow.model.SolarReading
+import ai.alec.deeppow.model.WeatherReading
+import ai.alec.deeppow.model.getWeatherKey
 import ai.alec.deeppow.options.SolarProductionOptions
-import org.apache.beam.sdk.transforms.GroupByKey
+import org.apache.beam.sdk.transforms.View
 
 object SolarProductionPipeline {
     @JvmStatic
     fun main(args: Array<String>) {
-        val (pipe, options) = KPipe.from<SolarProductionOptions>(args)
-        val x = listOf<Int>(3)
+        val (pipeline, options) = KPipe.from<SolarProductionOptions>(args)
 
-        val validReadingKvs = pipe
-            .fromText(
-                name = "Read Solar Rows",
-                filePath = options.inputFilePath
-            )
-            .map(name = "To SolarReading") {
-                it.toSolarReading()
+        val solarReadings = pipeline
+            .fromAvroClass<SolarReading>(filePath = options.solarInputFilePath)
+
+        val weatherReadingKvs = pipeline
+            .fromAvroClass<WeatherReading>(filePath = options.weatherInputFilePath)
+            .toKv(name = "KV by PlantID Datetime") {
+                getWeatherKey(plantId = it.plantId, dateTime = it.dateTime)
             }
-            .filter(name = "Filter valid") {
-                it.valid
-            }
-            .parDo(
-                name = "KV Power by dateTime",
-                doFn = KVPowerByDateTime()
-            )
+            .apply(View.asMap())
 
-        validReadingKvs
-            .apply(
-                "Group By Key",
-                GroupByKey.create<String, Double>()
-            )
-            .parDo(
-                name = "Sum By AC Power",
-                doFn = SumByACPower()
-            )
-            .toAvro(
-                name = "Write Sums to Avro",
-                filePath = options.outputFilePath
-            )
 
-        pipe.run()
+        solarReadings
+            .parDo(name = "Get Implied Panel Size", doFn = CalculateImpliedPanelSize(weatherView = weatherReadingKvs))
+            .toAvro(name = "Implied sizes to Avro", filePath = options.outputFilePath)
+
+        pipeline.run()
     }
 }
