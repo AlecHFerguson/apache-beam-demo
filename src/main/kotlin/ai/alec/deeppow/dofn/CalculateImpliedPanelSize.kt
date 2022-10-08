@@ -9,7 +9,9 @@ import org.apache.beam.sdk.values.PCollectionView
 
 const val panelEfficiency = 0.18
 
-class CalculateImpliedPanelSize(private val weatherView: PCollectionView<Map<String, WeatherReading>>) : DoFn<SolarReading, ImpliedPanelSize>() {
+class CalculateImpliedPanelSize(
+    private val weatherView: PCollectionView<Map<String, WeatherReading>>
+) : DoFn<SolarReading, ImpliedPanelSize>() {
     @ProcessElement
     fun processElement(@Element element: SolarReading, context: ProcessContext) {
         val weatherKey = getWeatherKey(plantId = element.plantId, dateTime = element.dateTime)
@@ -22,7 +24,10 @@ class CalculateImpliedPanelSize(private val weatherView: PCollectionView<Map<Str
                     dateTime = element.dateTime,
                     dcPower = element.dcPower,
                     irradiation = weatherReading.irradiation,
-                    impliedPanelSize = calcImpliedPanelSize(dcPower = element.dcPower, irradiation = weatherReading.irradiation)
+                    impliedPanelSize = calcImpliedPanelSize(
+                        dcPower = element.dcPower,
+                        irradiation = weatherReading.irradiation
+                    )
                 )
             )
         }

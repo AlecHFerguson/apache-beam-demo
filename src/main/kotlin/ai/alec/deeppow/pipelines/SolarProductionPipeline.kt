@@ -20,7 +20,7 @@ object SolarProductionPipeline {
         val solarReadings = pipeline
             .fromAvroClass<SolarReading>(filePath = options.solarInputFilePath)
 
-        val weatherReadingKvs = pipeline
+        val weatherReadingsMap = pipeline
             .fromAvroClass<WeatherReading>(filePath = options.weatherInputFilePath)
             .toKv(name = "KV by PlantID Datetime") {
                 getWeatherKey(plantId = it.plantId, dateTime = it.dateTime)
@@ -28,7 +28,11 @@ object SolarProductionPipeline {
             .apply(View.asMap())
 
         solarReadings
-            .parDo(name = "Get Implied Panel Size", doFn = CalculateImpliedPanelSize(weatherView = weatherReadingKvs))
+            .parDo(
+                name = "Get Implied Panel Size",
+                doFn = CalculateImpliedPanelSize(weatherView = weatherReadingsMap),
+                sideInputs = weatherReadingsMap
+            )
             .toAvro(name = "Implied sizes to Avro", filePath = options.outputFilePath)
 
         pipeline.run()
