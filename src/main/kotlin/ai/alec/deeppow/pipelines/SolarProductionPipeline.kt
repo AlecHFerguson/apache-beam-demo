@@ -27,7 +27,6 @@ object SolarProductionPipeline {
             }
             .apply(View.asMap())
 
-
         solarReadings
             .parDo(name = "Get Implied Panel Size", doFn = CalculateImpliedPanelSize(weatherView = weatherReadingKvs))
             .toAvro(name = "Implied sizes to Avro", filePath = options.outputFilePath)

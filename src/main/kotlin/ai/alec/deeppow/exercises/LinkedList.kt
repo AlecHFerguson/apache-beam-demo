@@ -3,7 +3,7 @@ package ai.alec.deeppow.exercises
 import ai.alec.deeppow.exercises.LinkedList.sortedListToBST
 
 fun main() {
-    val head = listOf(-10,-3,0,5,9).toLinkedList()
+    val head = listOf(-10, -3, 0, 5, 9).toLinkedList()
     val tree = sortedListToBST(head)
     println(tree)
 }
@@ -145,10 +145,10 @@ object LinkedList {
                 // Left Left case
                 if (newNode.value < left!!.value) {
                     rightRotate()
-                // Left Right case
+                    // Left Right case
                 } else if (newNode.value > left!!.value) {
-                    left = left!!.leftRotate();
-                    rightRotate();
+                    left = left!!.leftRotate()
+                    rightRotate()
                 }
             } else if (newNode.value > value && right != null) {
                 // Right Left case

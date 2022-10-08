@@ -34,7 +34,6 @@ object Palindrome {
                 if (testString.isPalindrome() && testString.length > longest.length) {
                     longest = testString
                 }
-
             }
         }
         return longest

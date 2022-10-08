@@ -9,7 +9,7 @@ import org.apache.beam.sdk.values.PDone
 object Avro {
     inline fun <reified Out> Pipeline.fromAvroClass(
         filePath: ValueProvider<String>,
-        name: String = "Read ${Out::class.simpleName}",
+        name: String = "Read ${Out::class.simpleName}"
     ): PCollection<Out> {
         return apply(
             name,

@@ -30,11 +30,12 @@ object TrappingRainWater {
         for (leftBound in (startIndex..height.lastIndex - 2)) {
             if (height[leftBound] > height[leftBound + 1]) {
                 for (rightBound in (leftBound + 2)..height.lastIndex) {
-                    if (height[rightBound - 1] < height[leftBound]
-                        && height[rightBound - 1] < height[rightBound]
-                        && height[rightBound] >= height[leftBound]
-                        && (rightBound == height.lastIndex || height[rightBound] >= height[rightBound + 1])) {
-                         return Pair(leftBound, rightBound)
+                    if (height[rightBound - 1] < height[leftBound] &&
+                        height[rightBound - 1] < height[rightBound] &&
+                        height[rightBound] >= height[leftBound] &&
+                        (rightBound == height.lastIndex || height[rightBound] >= height[rightBound + 1])
+                    ) {
+                        return Pair(leftBound, rightBound)
                     }
                 }
             }

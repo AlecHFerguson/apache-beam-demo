@@ -10,7 +10,8 @@ class KVPowerByDateTime : DoFn<SolarReading, KV<String, Double>>() {
         val element = context.element()
         context.output(
             KV.of(
-                element.dateTime, element.acPower
+                element.dateTime,
+                element.acPower
             )
         )
     }

@@ -19,7 +19,8 @@ object SumByACPowerSpec : Spek({
                 val slot = slot<SolarSum>()
                 val context = mockk<DoFn<KV<String, Iterable<@JvmWildcard Double>>, SolarSum>.ProcessContext> {
                     every { element() } returns KV.of(
-                        date, readings
+                        date,
+                        readings
                     )
                     every { output(capture(slot)) } just Runs
                 }

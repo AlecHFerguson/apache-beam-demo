@@ -24,7 +24,8 @@ object TextSpec : Spek({
                 val name = "Read Somethin'"
                 val filePath = ValueProvider.StaticValueProvider.of("/best/skintrack/ever.csv")
                 pipeline.fromText(
-                    name = name, filePath = filePath
+                    name = name,
+                    filePath = filePath
                 )
 
                 expect(nameSlot.captured).to.equal(name)

@@ -19,7 +19,7 @@ class CalculateImpliedPanelSize(private val weatherView: PCollectionView<Map<Str
                 ImpliedPanelSize(
                     plantId = element.plantId,
                     sourceKey = element.sourceKey,
-                    dateTime= element.dateTime,
+                    dateTime = element.dateTime,
                     dcPower = element.dcPower,
                     irradiation = weatherReading.irradiation,
                     impliedPanelSize = calcImpliedPanelSize(dcPower = element.dcPower, irradiation = weatherReading.irradiation)

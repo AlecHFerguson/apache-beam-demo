@@ -1,7 +1,6 @@
 package ai.alec.deeppow.model
 
 import com.opencsv.bean.CsvBindByName
-import org.apache.avro.reflect.Nullable
 import java.io.Serializable
 
 // DATE_TIME,PLANT_ID,SOURCE_KEY,DC_POWER,AC_POWER,DAILY_YIELD,TOTAL_YIELD
@@ -19,7 +18,7 @@ data class SolarReading(
     @CsvBindByName(column = "SOURCE_KEY")
     val sourceKey: String = "",
     @CsvBindByName(column = "TOTAL_YIELD")
-    val totalYield: Double = Double.NaN,
+    val totalYield: Double = Double.NaN
 //    val valid: Boolean = true
 ) : Serializable
 
@@ -34,7 +33,7 @@ fun String.toSolarReading(): SolarReading {
             plantId = splitRow[1],
 //            rawInput = this,
             sourceKey = splitRow[2],
-            totalYield = splitRow[6].toDouble(),
+            totalYield = splitRow[6].toDouble()
 //            valid = true
         )
     } catch (e: IndexOutOfBoundsException) {

@@ -5,7 +5,6 @@ import com.opencsv.bean.CsvToBeanBuilder
 import org.apache.avro.file.DataFileWriter
 import org.apache.avro.reflect.ReflectData
 import org.apache.avro.reflect.ReflectDatumWriter
-import org.apache.avro.specific.SpecificDatumWriter
 import java.io.File
 import java.io.FileReader
 
