@@ -14,6 +14,7 @@
         <kotlin.version>1.6.21</kotlin.version>
         <beam.version>2.41.0</beam.version>
         <spek.version>2.0.18</spek.version>
+        <junit-jupiter.version>5.9.1</junit-jupiter.version>
         <dataflowBucket>gs://deeppow-dataflow-templates</dataflowBucket>
         <templatesPath>${dataflowBucket}/templates</templatesPath>
         <tempPath>${dataflowBucket}/temp</tempPath>
@@ -69,6 +70,20 @@
         </dependency>
 
         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
             <groupId>org.spekframework.spek2</groupId>
             <artifactId>spek-dsl-jvm</artifactId>
             <version>${spek.version}</version>
@@ -79,6 +94,7 @@
             <groupId>org.spekframework.spek2</groupId>
             <artifactId>spek-runner-junit5</artifactId>
             <version>${spek.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -98,6 +114,9 @@
     </dependencies>
 
     <build>
+<!--        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>-->
+<!--        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>-->
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -182,6 +201,7 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
