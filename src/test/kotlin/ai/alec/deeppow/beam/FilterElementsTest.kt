@@ -6,16 +6,17 @@ import org.apache.beam.sdk.testing.TestPipeline
 import org.apache.beam.sdk.transforms.Create
 import org.junit.Rule
 import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
 import java.io.Serializable
 
-private data class Snow(
-    val temperature: Double = Double.NaN,
-    val heightOfSnow: Double = Double.NaN
-) : Serializable
-
-class FilterElementsSpec {
+class FilterElementsTest {
     @get:Rule
-    val pipeline: TestPipeline = TestPipeline.create()
+    private lateinit var pipeline: TestPipeline
+
+    @BeforeEach
+    fun setupPipeline() {
+        pipeline = TestPipeline.create()
+    }
 
     @Test
     fun testElementsFiltered() {
@@ -31,4 +32,9 @@ class FilterElementsSpec {
 
         pipeline.run()
     }
+
+    data class Snow(
+        val temperature: Double = Double.NaN,
+        val heightOfSnow: Double = Double.NaN
+    ) : Serializable
 }
